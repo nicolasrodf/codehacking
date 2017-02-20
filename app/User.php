@@ -11,8 +11,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+    //mass asignmente de_Todo lo que se ingresa en el formulario correspondiente a la creaciond e usuario!
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id', 'photo_id', 'is_active'
     ];
 
     /**

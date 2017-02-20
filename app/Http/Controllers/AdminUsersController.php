@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UsersRequest;
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,7 +19,10 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        return view('admin.users.index'); //segun php artisan route:list. Va al index de la carpeta admin/users
+
+        $users = User::all();
+
+        return view('admin.users.index', compact('users')); //segun php artisan route:list. Va al index de la carpeta admin/users
     }
 
     /**
@@ -27,7 +33,12 @@ class AdminUsersController extends Controller
     public function create()
     {
         //
-        return view('admin.users.create');
+
+        $roles = Role::lists('name', 'id')->all(); //mostrará una lista en el formulario, con valor "id" y nombre "name".
+
+        return view('admin.users.create', compact('roles')); //variable roles se usará en admin\users\create.blade
+
+
     }
 
     /**
@@ -36,9 +47,14 @@ class AdminUsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(UsersRequest $request) //UsersRequest se creó con php artisan make:request UsersRequest
+    {                                            //el objetivo es que en ese Request, se ponen reglas obligatorias.
         //
+
+        //return $request->all();
+        User::create($request->all());
+
+        return redirect('/admin/users');
     }
 
     /**
