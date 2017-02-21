@@ -1,0 +1,17 @@
+[33mcommit 3e9f92908a735ad5b3babaca2c163cc22e2a6f60[m
+Author: Nicolas <nicolas@mail.com>
+Date:   Mon Feb 20 17:21:28 2017 -0500
+
+    users page working without photos
+
+[33mcommit a9a168cb0ce4b53ed396849888f9131ae880f46f[m
+Author: Nicolas <nicolas@mail.com>
+Date:   Sun Feb 19 17:46:46 2017 -0500
+
+    admin master page setup
+
+[33mcommit d341373f2672ee2c7a4d3ce9102d3de6a33cdcef[m
+Author: Nicolas <nicolas@mail.com>
+Date:   Thu Feb 16 11:40:35 2017 -0500
+
+    my first commit - admin views created
