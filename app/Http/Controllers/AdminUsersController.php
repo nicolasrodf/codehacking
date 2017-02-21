@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UsersEditRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
@@ -55,6 +56,20 @@ class AdminUsersController extends Controller
         //User::create($request->all());
 //        return redirect('/admin/users');
 
+        if(trim($request->password) == ''){ //si la pass esta vacia
+
+            $input = $request->except('password'); //pasar_todo menos el campo password
+
+        } else {
+
+            $input = $request->all(); //sino pasar_todo
+
+            $input['password'] = bcrypt($request->password); //encriptar pass
+
+        }
+
+
+
         $input = $request->all(); //almaceno_todo lo ingresado
 
         if($file = $request->file('photo_id')){ //si existe algo en file
@@ -65,13 +80,15 @@ class AdminUsersController extends Controller
 
             //crear registro en photos
             $photo = Photo::create(['file'=>$name]); //crear una nueva foto  con el nombre del archivo
-            $input['photo_id'] = $photo->id; //almacenar  su id en la entrada de datos para mas adelante ingresar a BBDD
+
+            $input['photo_id'] = $photo->id; //almacenar  su id en la entrada de datos con nombre columna "photo_id"
+                                            //para mas adelante ingresar a BBDD
 
         }
 
-        $input['password'] = bcrypt($request->password); //encriptar pass
-
         User::create($input); //crear la entrada de datos completa en la BBDD
+
+        return redirect('/admin/users');
 
 
 
@@ -97,7 +114,12 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.users.edit');
+
+        $user = User::findOrFail($id);
+
+        $roles = Role::lists('name', 'id')->all();
+
+        return view('admin.users.edit',compact('user', 'roles'));
     }
 
     /**
@@ -107,9 +129,42 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersEditRequest $request, $id)
     {
         //
+
+        $user = User::findOrFail($id);
+
+        if(trim($request->password) == ''){ //si la pass esta vacia
+
+            $input = $request->except('password'); //pasar_todo menos el campo password
+
+        } else {
+
+            $input = $request->all(); //sino pasar_todo
+
+            $input['password'] = bcrypt($request->password); //encriptar pass
+
+        }
+
+
+        $input = $request->all();
+
+        if($file = $request->file('photo_id')){
+
+            $name = time() . $file->getClientOriginalName();
+
+            $file->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            $input['photo_id'] = $photo->id;
+
+        }
+
+        $user->update($input);
+
+        return redirect('admin/users');
     }
 
     /**
