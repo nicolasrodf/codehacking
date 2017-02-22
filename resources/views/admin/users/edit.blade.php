@@ -57,8 +57,22 @@
             </div>
 
             <div class="form-group">
-                {!! Form::submit('Edit User', ['class'=>'btn btn-primary']) !!}
+                {!! Form::submit('Update User', ['class'=>'btn btn-primary col-sm-2']) !!}
             </div>
+
+            {!! Form::close() !!}
+
+
+
+
+            {{--abro otro formulario para crear funcionalidad para borrar usuario--}}
+            {!! Form::open(['method'=>'DELETE', 'action'=>['AdminUsersController@destroy', $user->id]] )!!}
+
+                    {{csrf_field()}}
+
+                    <div class="form-group">
+                        {!! Form::submit('Delete user', ['class'=>'btn btn-danger col-sm-2']) !!}
+                    </div>
 
             {!! Form::close() !!}
 
